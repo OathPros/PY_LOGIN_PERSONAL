@@ -1,0 +1,194 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="styles.css"><title>Passport York – Ideal User Journeys</title></head><body>
+<main class="overview">
+  <header class="overview-header"><img src="assets/york-logo.png" alt="York University"><h1>Passport York ideal user journeys</h1></header>
+
+  <section class="flow-map">
+    <h2>Journey map</h2>
+    <div class="flow-legend">
+      <span class="legend-item"><i class="legend-swatch legend-core"></i>Shared screen</span>
+      <span class="legend-item"><i class="legend-swatch legend-no-recovery"></i>Recovery email missing</span>
+      <span class="legend-item"><i class="legend-swatch legend-happy"></i>Happy path</span>
+      <span class="legend-item"><i class="legend-swatch legend-decision"></i>Decision point</span>
+      <span class="legend-item"><i class="legend-swatch legend-terminal"></i>Completed / signed in</span>
+      <span class="legend-item"><i class="legend-swatch legend-external"></i>External action</span>
+      <span class="legend-item"><i class="legend-line legend-line-solid"></i>Expected next step</span>
+      <span class="legend-item"><i class="legend-line legend-line-dashed"></i>Cancel, retry, or shortcut</span>
+    </div>
+    <p class="flow-scroll-hint">Drag to pan, scroll or pinch to zoom, or use the +/− controls in the corner. Press 0 to reset the view.</p>
+    <div class="mermaid-wrap" tabindex="0" role="group" aria-label="Interactive user journey flowchart. Drag to pan, scroll to zoom, or use arrow keys to pan and +/- to zoom, 0 to reset.">
+      <div class="flow-zoom-controls" role="group" aria-label="Diagram zoom controls">
+        <button type="button" class="flow-zoom-btn" data-zoom="in" aria-label="Zoom in">+</button>
+        <button type="button" class="flow-zoom-btn" data-zoom="out" aria-label="Zoom out">&minus;</button>
+        <button type="button" class="flow-zoom-btn" data-zoom="reset" aria-label="Reset zoom and position">&#8635;</button>
+      </div>
+<pre class="mermaid">
+flowchart LR
+    Login["Sign in to\nPassport York"]
+    KnowsPw{"Sign-in succeeds?"}
+    SignedIn(["Signed in"])
+    ResetReq["Reset Password"]
+    HasRecovery{"Recovery email\non file?"}
+    NoRecovery["Password Reset\nUnavailable"]
+    UpdateIntro["Update Recovery\nEmail"]
+    HasRecoveryAlready{"Recovery email\nalready set?"}
+    UpdateForm["Set Recovery\nEmail"]
+    UpdateCurrent["Update Recovery\nEmail (Current)"]
+    VerifyRecovery["Verify New\nRecovery Email"]
+    UpdateDone["Recovery Email\nUpdated"]
+    ITSupport((("Contact IT\nSupport")))
+    Sent["Enter Your\nOne-Time Code"]
+    NewPassword["Choose New\nPassword"]
+    Success(["Password Reset\nComplete"])
+    Expired["Reset Code\nExpired"]
+
+    Login -->|"Enters credentials"| KnowsPw
+    KnowsPw -->|"Yes"| SignedIn
+    KnowsPw -->|"No / forgot password"| ResetReq
+    Login -.->|"Update recovery email"| UpdateIntro
+
+    ResetReq -->|"Submits identity details"| HasRecovery
+    ResetReq -.->|"Back to sign in"| Login
+    ResetReq -.->|"Update recovery email"| UpdateIntro
+    HasRecovery -->|"No"| NoRecovery
+    HasRecovery -->|"Yes"| Sent
+
+    NoRecovery -->|"Update recovery email"| UpdateIntro
+    NoRecovery -.->|"Cancel"| Login
+    NoRecovery -.->|"Contact IT Support"| ITSupport
+
+    UpdateIntro -->|"Logs in to verify identity"| HasRecoveryAlready
+    UpdateIntro -.->|"Cancel"| Login
+    HasRecoveryAlready -->|"No"| UpdateForm
+    HasRecoveryAlready -->|"Yes"| UpdateCurrent
+
+    UpdateForm -->|"Updates email"| VerifyRecovery
+    UpdateForm -.->|"Continue without changes"| ResetReq
+    UpdateCurrent -->|"Updates email"| VerifyRecovery
+    UpdateCurrent -.->|"Continue, keep current"| Login
+
+    VerifyRecovery -->|"Enters correct code"| UpdateDone
+    VerifyRecovery -.->|"Resends code"| VerifyRecovery
+
+    UpdateDone -->|"Continue to password reset"| ResetReq
+    UpdateDone -.->|"Return to sign in"| Login
+
+    Sent -->|"Enters correct code"| NewPassword
+    Sent -.->|"Resends code"| Sent
+    Sent -.->|"Preview expired-code state"| Expired
+
+    NewPassword -->|"Passwords match"| Success
+    NewPassword -.->|"Don't match: inline error"| NewPassword
+    NewPassword -.->|"Cancels"| Login
+
+    Expired -.->|"Requests a new code"| ResetReq
+    Expired -.->|"Back to sign in"| Login
+    Success -->|"Signs in with new password"| Login
+
+    classDef decision fill:#fff7e8,stroke:#e8c58e,color:#70400b,font-weight:700,stroke-width:1.5px;
+    classDef external fill:#f5f7f9,stroke:#8b98a3,color:#44505c,stroke-dasharray:4 3;
+    classDef terminal fill:#edf8f2,stroke:#a8d7c0,color:#115338,font-weight:700,stroke-width:1.5px;
+    classDef core fill:#ffffff,stroke:#34414d,color:#111827,stroke-width:1.5px;
+    classDef noRecoveryScreen fill:#fdf6f2,stroke:#d98a5f,color:#7a3a13;
+    classDef happyScreen fill:#f2f7fd,stroke:#5f8fd9,color:#123a7a;
+
+    class KnowsPw,HasRecovery,HasRecoveryAlready decision;
+    class ITSupport external;
+    class SignedIn,Success terminal;
+    class Login,ResetReq,VerifyRecovery core;
+    class NoRecovery,UpdateIntro,UpdateForm,UpdateDone noRecoveryScreen;
+    class Sent,NewPassword,Expired,UpdateCurrent happyScreen;
+
+    click Login "login.html" _self
+    click ResetReq "password-reset.html?flow=happy" _self
+    click NoRecovery "password-reset-no-recovery.html?flow=no-recovery" _self
+    click UpdateIntro "update-recovery-email-1.html?flow=no-recovery" _self
+    click UpdateForm "update-recovery-email-2.html?flow=no-recovery" _self
+    click UpdateCurrent "update-recovery-email-current.html?flow=happy" _self
+    click VerifyRecovery "verify-recovery-email.html?flow=happy" _self
+    click UpdateDone "recovery-email-updated.html?flow=no-recovery" _self
+    click Sent "password-reset-sent.html?flow=happy" _self
+    click NewPassword "new-password.html?flow=happy" _self
+    click Success "password-reset-success.html?flow=happy" _self
+    click Expired "password-reset-error.html?flow=happy" _self
+    click SignedIn "signed-in.html" _self
+    click ITSupport "mailto:askit@yorku.ca" _self
+</pre>
+    </div>
+    <noscript><p class="flow-fallback-note">This interactive map requires JavaScript. Use the screen links below instead.</p></noscript>
+    <p class="flow-fallback-note">Diagram not loading, or need a keyboard/screen-reader-friendly option? Use the direct links below.</p>
+  </section>
+
+  <section class="screen-index"><h2>Open any screen</h2><div class="screen-links">
+    <a href="login.html">Sign In</a><a href="password-reset.html">Reset Password</a><a href="password-reset-no-recovery.html">Password Reset Unavailable</a><a href="update-recovery-email-1.html">Update Recovery Email</a><a href="update-recovery-email-2.html">Set Recovery Email</a><a href="update-recovery-email-current.html">Update Recovery Email (Current)</a><a href="verify-recovery-email.html">Verify New Recovery Email</a><a href="recovery-email-updated.html">Recovery Email Updated</a><a href="password-reset-sent.html">Enter Your One-Time Code</a><a href="new-password.html">Choose New Password</a><a href="password-reset-success.html">Password Reset Complete</a><a href="password-reset-error.html">Reset Code Expired</a><a href="signed-in.html">Signed In</a>
+  </div></section>
+  <p class="prototype-note">Prototype note: the dark strip at the top of individual screens is navigation for review only and is not part of the proposed production Passport York UI.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
+<script src="app.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: false,
+    securityLevel: 'loose',
+    theme: 'base',
+    themeVariables: {
+      fontFamily: 'Arial, Helvetica, sans-serif',
+      primaryColor: '#ffffff',
+      primaryBorderColor: '#34414d',
+      primaryTextColor: '#111827',
+      lineColor: '#8a94a0',
+      fontSize: '15px'
+    },
+    flowchart: { curve: 'basis' }
+  });
+
+  mermaid.run({ querySelector: '.mermaid' }).then(() => {
+    document.querySelectorAll('.mermaid-wrap').forEach(wrap => {
+      const svg = wrap.querySelector('svg');
+      if (!svg || typeof svgPanZoom !== 'function') return;
+      svg.style.width = '100%';
+      svg.style.height = '100%';
+
+      const panZoom = svgPanZoom(svg, {
+        zoomEnabled: true,
+        panEnabled: true,
+        controlIconsEnabled: false,
+        mouseWheelZoomEnabled: true,
+        preventMouseEventsDefault: true,
+        dblClickZoomEnabled: true,
+        fit: true,
+        center: true,
+        minZoom: 0.4,
+        maxZoom: 8,
+        zoomScaleSensitivity: 0.25
+      });
+
+      const zoomInBtn = wrap.querySelector('[data-zoom="in"]');
+      const zoomOutBtn = wrap.querySelector('[data-zoom="out"]');
+      const zoomResetBtn = wrap.querySelector('[data-zoom="reset"]');
+      if (zoomInBtn) zoomInBtn.addEventListener('click', () => panZoom.zoomIn());
+      if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => panZoom.zoomOut());
+      if (zoomResetBtn) zoomResetBtn.addEventListener('click', () => panZoom.reset());
+
+      window.addEventListener('resize', () => {
+        panZoom.resize();
+        panZoom.fit();
+        panZoom.center();
+      });
+
+      wrap.addEventListener('keydown', e => {
+        const step = 60;
+        switch (e.key) {
+          case 'ArrowUp': panZoom.panBy({ x: 0, y: step }); e.preventDefault(); break;
+          case 'ArrowDown': panZoom.panBy({ x: 0, y: -step }); e.preventDefault(); break;
+          case 'ArrowLeft': panZoom.panBy({ x: step, y: 0 }); e.preventDefault(); break;
+          case 'ArrowRight': panZoom.panBy({ x: -step, y: 0 }); e.preventDefault(); break;
+          case '+': case '=': panZoom.zoomIn(); e.preventDefault(); break;
+          case '-': case '_': panZoom.zoomOut(); e.preventDefault(); break;
+          case '0': panZoom.reset(); e.preventDefault(); break;
+        }
+      });
+    });
+  });
+</script>
+</body></html>
