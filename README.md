@@ -35,3 +35,5 @@ Use the supplied service screenshots as the visual reference and these pages as 
 ## Validation
 
 The visual refresh was checked in Chromium at 1440px and 390px widths, with functional checks for diagram rendering, sign-in navigation, password visibility, both reset branches, code navigation, password mismatch feedback, successful reset, and both recovery-email journeys. All local page and asset references were checked. JavaScript syntax can be checked with `node --check app.js`.
+
+The masthead also includes the bilingual University lockup, compact Passport York identifier, blue Logout control, and a right-aligned signed-in line on authenticated mock screens. `demo.user` is a fixed fictional identity for design review. Logout navigates to `logged-out.html`; it does not manage a real session. Public recovery screens retain the same University header and red service banner without implying an authenticated session. Main and sidebar headings share the same typography rule.

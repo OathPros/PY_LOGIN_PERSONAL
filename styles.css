@@ -144,3 +144,23 @@ input[aria-invalid=true]{border:2px solid var(--danger)}
  .flow-map,.screen-index{padding:16px}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Passport York masthead: keep the institutional and account marks together. */
+.university-header .header-inner{padding:0 15px}
+.york-lockup{position:relative;display:block;width:126px;height:44px}
+.york-lockup img{width:126px;height:auto}
+.york-lockup>span{position:absolute;left:5px;top:29px;width:79px;text-align:center;font-family:Arial,sans-serif;font-size:5px;line-height:1.35;letter-spacing:3px;color:#222}
+.header-account{display:flex;align-items:center;gap:8px}
+.header-account .passport-wordmark{font-size:10px;font-weight:400;letter-spacing:-.5px}
+.header-account .passport-wordmark strong{font-size:19px;letter-spacing:-1px}
+.logout-link{display:inline-flex;align-items:center;gap:6px;padding:3px 7px;background:var(--navy);color:#fff;font-size:14px;line-height:1.6;text-decoration:none}
+.logout-link:hover{background:#003b69;color:#fff}
+.account-status{width:min(1140px,calc(100% - 48px));margin:0 auto;display:flex;justify-content:flex-end;min-height:26px;font-size:14px}
+.account-status+.site-shell{padding-top:50px}
+.brand h1,.service-aside h2{font-family:"Open Sans","Segoe UI",Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.35;color:var(--navy);letter-spacing:0;text-transform:none}
+@media(max-width:800px){
+ .account-status{width:calc(100% - 32px);font-size:13px}
+ .account-status+.site-shell{padding-top:32px}
+ .brand h1,.service-aside h2{font-size:27px}
+ .university-header .header-inner{padding:0}
+}
